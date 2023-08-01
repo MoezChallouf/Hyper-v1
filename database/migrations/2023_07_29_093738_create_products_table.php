@@ -17,13 +17,15 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('quantity')->default(0);
-            $table->string('colors')->default('Black');
+            $table->string('color')->nullable();;
             $table->string('matter')->default('Bois');
             $table->unsignedInteger('discount')->default(0);
             $table->decimal('price', 8, 2);
             $table->enum('status', ['En Stock', 'Epuise'])->default('En Stock');
             $table->string('slug')->nullable();;
             $table->foreignId('category_id');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
