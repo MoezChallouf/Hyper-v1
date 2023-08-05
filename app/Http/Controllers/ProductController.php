@@ -70,15 +70,20 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
-            'colors' => 'nullable|string|max:255',
+            'color' => 'nullable|string|max:255',
             'matter' => 'nullable|string|max:255',
             'discount' => 'required|numeric|min:0',
             'price' => 'required|numeric|min:0',
             'status' => 'required|in:En Stock,Epuise',
             'category_id' => 'required|exists:categories,id',
         ]);
-
+        //($request->all());
+        //dd($product->update($data));
         $product->update($data);
+
+        return response()->json([
+            'message' => 'Product updated successfully.',
+        ]);
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }

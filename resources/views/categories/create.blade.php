@@ -79,9 +79,29 @@
             </button>
         </div>
     </div>
+    <div class="flex justify-end mt-4">
+        <button
+            type="button"
+            id="closeAddProductModal"
+            class="mr-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-opacity-50"
+        >
+            Cancel
+        </button>
+        <button
+            type="submit"
+            class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:ring focus-visible:ring-opacity-50"
+        >
+            Add Category
+        </button>
+    </div>
 
 
 </form>
+@section('scripts')
+    <script>
+        $('#name').val();
+    </script>
+@endsection
 </body>
 
 </html>

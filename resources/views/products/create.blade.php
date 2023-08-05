@@ -109,14 +109,23 @@
     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
     </p>
     @enderror
-    <button
-        type="submit"
-        class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:ring focus-visible:ring-opacity-50"
-    >
-        Add Product
-    </button>
 
+    <div class="flex justify-end">
+        <button
+            type="submit"
+            class=" mr-2 flex px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:ring focus-visible:ring-opacity-50"
+        >
+            Add Product
+        </button>
+        <button
+            type="button"
+            id="closeAddProductModal"
+            class="mr-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-opacity-50"
+        >
+            Cancel
+        </button>
+
+    </div>
 </form>
-
 
 

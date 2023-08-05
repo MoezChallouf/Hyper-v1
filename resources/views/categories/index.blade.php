@@ -35,28 +35,11 @@
                 >
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <!-- Add Product Form goes here -->
-                        <form action="{{ route('categories.store') }}" method="post">
-                            @csrf
-                            <div>
-                                @include('categories.create')
-                                <!-- Add more form fields for product details (e.g., category, price, description) -->
-                            </div>
-                            <div class="flex justify-end mt-4">
-                                <button
-                                    type="button"
-                                    id="closeAddProductModal"
-                                    class="mr-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-opacity-50"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:ring focus-visible:ring-opacity-50"
-                                >
-                                    Add Category
-                                </button>
-                            </div>
-                        </form>
+                        <div>
+                            @include('categories.create')
+                            <!-- Add more form fields for product details (e.g., category, price, description) -->
+                        </div>
+
                     </div>
                 </div>
             </div>

@@ -2,7 +2,6 @@
 @section('title', 'Products Management')
 @section('content')
 
-    <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <!--Container-->
     <div class="container w-full mx-auto px-2">
 
@@ -36,27 +35,15 @@
                 >
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <!-- Add Product Form goes here -->
-                        <form action="{{ route('products.store') }}" method="post">
-                            @csrf
-                            <div>
-                                @include('products.create')
-                                <!-- Add more form fields for product details (e.g., category, price, description) -->
-                            </div>
-                            <div class="flex justify-end mt-4">
-                                <button
-                                    type="button"
-                                    id="closeAddProductModal"
-                                    class="mr-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-opacity-50"
-                                >
-                                    Cancel
-                                </button>
-
-                            </div>
-                        </form>
+                        <div>
+                            @include('products.create')
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <!--Card-->
         <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
             <table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
@@ -115,11 +102,12 @@
                             {{ $product->discount }}%
                         </td>
 
-
+                        {{--              id="openEditProductModal "          --}}
                         <td class="py-3 px-6 content-center mt-6 text-right flex justify-center">
                             <div class="flex item-center ">
-                                <a href="{{ route('products.edit', $product->id) }}"
-                                   class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                <a onclick="openeditModal()"
+                                   data-id="{{$product->id}}"
+                                   class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110" id="edit_btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -159,7 +147,13 @@
         </div>
     </div>
 
-    </body>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        // Submit the form via Ajax when the "Update Product" button is clicked
+
+    </script>
+
     <script>
         // Get the modal element
         const addProductModal = document.getElementById('addProductModal');
@@ -174,19 +168,51 @@
             document.body.classList.add('modal-open');
         }
 
+
         // Function to close the modal
         function closeModal() {
             addProductModal.classList.add('hidden');
             document.body.classList.remove('modal-open');
         }
 
+        function openeditModal() {
+            $.ajax({
+                url: "{{ route('products.edit', $product->id) }}"
+            }).done(function (data) {
+                $('#edit_data').append(data)
+                $('#EditProductModal').show();
+            });
+        }
+
+        {{--function update() {--}}
+        {{--    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');--}}
+        {{--    var discount = $("#edit_Product #discount").val(),--}}
+        {{--        colors = $("#edit_Product #colors").val(),--}}
+        {{--        name = $("#edit_Product #colors").val(),--}}
+        {{--        price = $("#edit_Product #colors").val(),--}}
+        {{--        status = $("#edit_Product #colors").val(),--}}
+        {{--        disc = $("#edit_Product #colors").val(),--}}
+        {{--        qty = $("#edit_Product #colors").val(),--}}
+        {{--        matter = $("#edit_Product #colors").val(),--}}
+        {{--        cat = $("#edit_Product #colors").val();--}}
+        {{--    var--}}
+        {{--        formData = new FormData($('#edit_Product')[0]);--}}
+        {{--    console.log(formData)--}}
+        {{--    $.ajax({--}}
+        {{--        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},--}}
+        {{--        url: "{{ route('products.update', $product->id) }}",--}}
+        {{--        type: "PUT",--}}
+        {{--        data: formData,--}}
+        {{--    });--}}
+        {{--}--}}
+
         // Event listener to open the modal when the "Add Product" button is clicked
         openAddProductModal.addEventListener('click', openModal);
 
         // Event listener to close the modal when the "Cancel" button is clicked
         closeAddProductModal.addEventListener('click', closeModal);
+
     </script>
 @endsection
-
-
+@include('products.edit')
 
