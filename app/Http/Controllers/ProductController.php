@@ -2,98 +2,115 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Image;
 
 class ProductController extends Controller
 {
+    // Display a listing of the products
     public function index()
     {
-//        $products = Product::all();
-        $products = Product::with('category.options')->get();
+        $products = Product::all();
         return view('products.index', compact('products'));
-
-
-//        return view('products.index', compact('products'));
     }
+
+    // Show the form for creating a new product
 
     public function create()
     {
+
         $categories = Category::all();
-        foreach ($categories as $category) {
-            $category->options = $category->options()->get();
-        }
         return view('products.create', compact('categories'));
     }
 
+    // Store a newly created product in the database
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'quantity' => 'required|integer|min:0',
-            'colors' => 'nullable|string|max:255',
-            'matter' => 'nullable|string|max:255',
-            'discount' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
             'status' => 'required|in:En Stock,Epuise',
+            'matter' => 'required|string|max:255',
+            'color' => 'required|string|max:255',
+            'discount' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'color' => 'nullable|string|max:7', // Assuming the color is stored as a string (hex code)
-//            'image' => 'nullable|image|mimes:png,jpg,gif|max:10240', // Max 10MB image file
+            'image.*' => 'required|image|mimes:jpeg,jpg,png,gif,svg|max:5120',
         ]);
-
-//        if ($request->hasFile('image')) {
-//            $imagePath = $request->file('image')->store('products', 'public');
-//            $validatedData['image'] = $imagePath;
-//        }
 
         $product = new Product($validatedData);
         $product->save();
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $filename = $imageFile->getClientOriginalName();
+                $path = $imageFile->storeAs('images', $filename, 'public');
+
+                $image = new Image([
+                    'filename' => $filename,
+                    'path' => $path,
+                ]);
+                $product->images()->save($image); // Associate the image with the product
+            }
+        }
+
+        return redirect()->route('products.index')->with('success', 'Your Product has been created.');
     }
 
-    public function show(Product $product)
+    // Show the specified product
+    public function show($id)
     {
+        $product = Product::with('images')->findOrFail($id);
         return view('products.show', compact('product'));
     }
 
+    // Show the form for editing the specified product
     public function edit(Product $product)
     {
         $categories = Category::all();
         return view('products.edit', compact('product', 'categories'));
     }
 
+
+    // Update the specified product in the database
     public function update(Request $request, Product $product)
     {
-        $data = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
             'color' => 'nullable|string|max:255',
-            'matter' => 'nullable|string|max:255',
-            'discount' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
+            'matter' => 'required|string|max:255',
+            'discount' => 'required|integer|min:0',
+            'price' => 'required|numeric|min:0.01',
             'status' => 'required|in:En Stock,Epuise',
             'category_id' => 'required|exists:categories,id',
-        ]);
-        //($request->all());
-        //dd($product->update($data));
-        $product->update($data);
-
-        return response()->json([
-            'message' => 'Product updated successfully.',
+            'description' => 'nullable|string',
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        $product->update($validatedData);
+
+        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
     }
 
+    // Remove the specified product from the database
     public function destroy(Product $product)
     {
         $product->delete();
-
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
     }
+
+    public function getImage($filename)
+    {
+        $path = storage_path('app/public/images/' . $filename);
+
+        if (file_exists($path)) {
+            return response()->file($path);
+        }
+
+        abort(404);
+    }
+
 }
-
-

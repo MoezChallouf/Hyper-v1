@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
     <div class="min-h-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
@@ -37,6 +37,20 @@
                     <label class="uppercase text-sm font-bold">Category:</label>
                     <p>{{ $product->category->name }}</p>
                 </div>
+                <div>
+                    <label class="uppercase text-sm font-bold">image:</label>
+                    @if ($product->images)
+                        <li>
+                            @foreach ($product->images as $image)
+
+                                <img src="{{ asset('storage/images/' . $image->filename) }}" alt="Product Image">
+
+                            @endforeach
+                        </li>
+                    @endif
+
+                </div>
+
             </div>
             <div class="flex justify-end">
                 <a href="{{ route('products.edit', $product->id) }}"

@@ -1,131 +1,175 @@
-<form action="{{ route('products.store') }}" method="post">
-    @csrf
-    <div>
-        <label for="name" class="block mb-2 text-md font-bold text-black-700 ">Product Name</label>
-        <input type="text" id="name" name="name"
-               class=" border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5 "
-               placeholder="Product Name"
-               value="{{old('name')}}"
-               required>
-        @error('name')
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
-        </p>
-        @enderror
-    </div>
+@extends('layouts.dashboard')
+@section('title', 'Product Management')
+@section('content')
 
-    {{--    --------------------------Problem : Undefined variable: categories (View: C:\MAMP\htdocs\HyperProject\v1\resources\views\products\create.blade.php)-------------------}}
+    <div class="justify-center bg-gray-200/40 min-h-screen"><!-- Comment Form -->
+        <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+            <div class="mx-auto justify-center items-center max-w-4xl">
+                <h1 class="px-3 text-xl justify-center items-center font-bold text-center text-gray-500">
+                    Create New Product</h1>
 
-    {{--    <div class="form-group">--}}
-    {{--        <label for="category_id" class="block mb-2 text-md font-bold text-black-700">Category</label>--}}
-    {{--        <select--}}
-    {{--            class="form-control block border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5"--}}
-    {{--            id="category_id" name="category_id" required>--}}
-    {{--            <option selected disabled>Select Parent Category</option>--}}
-    {{--            @foreach($categories as $category)--}}
-    {{--                <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
-    {{--            @endforeach--}}
-    {{--        </select>--}}
+                <div
+                    class="mt-5 p-4 relative z-10 bg-white border rounded-xl sm:mt-10 md:p-10 dark:bg-gray-100 dark:border-gray-700">
+                    <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label class="block mb-2 text-md font-medium text-black-500"
+                                   for="name">Name :</label>
+                            <input
+                                class=" form-control  border border-gray-700 text-black text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400 mt-3"
+                                type="text" placeholder="Product Name" id="name" name="name" value="{{old('name')}}"
+                                required>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+                            <div>
+                                <label for="price"
+                                       class="block text-md font-medium mb-2 mt-3">Price :</label>
+                                <div class="relative">
+                                    <input type="text" id="price"
+                                           name="price"
+                                           class="py-3 px-4 pl-9 pr-16 block w-full border-gray-50 shadow-sm rounded-lg text-md focus:z-10 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-700 dark:placeholder-gray-400 mt-3"
+                                           placeholder="0.00"
+                                           required
+                                           value="{{old('price')}}">
+                                    <div
+                                        class="absolute inset-y-0 right-0 flex items-center pointer-events-none z-20 pr-4">
+                                        <span class="text-gray-500">TND</span>
+                                    </div>
+                                </div>
 
-    {{--        <label for="option" class="block mb-2 text-md font-bold text-black-700">Child--}}
-    {{--            Category</label>--}}
-    {{--        <select--}}
-    {{--            class="form-control border mt-3 border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5"--}}
-    {{--            id="option" name="option" required>--}}
-    {{--            <option selected disabled>Select Child Category</option>--}}
-    {{--            @foreach($categories as $category)--}}
-    {{--                @foreach($category->options as $option)--}}
-    {{--                    <option value="{{ $option->id }}">{{ $option->name }}</option>--}}
-    {{--                @endforeach--}}
-    {{--            @endforeach--}}
-    {{--        </select>--}}
+                            </div>
 
-    {{--        @error('option')--}}
-    {{--        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>--}}
-    {{--        </p>--}}
-    {{--        @enderror--}}
-    {{--    </div>--}}
-    <div>
-        <label for="price" class="block mb-2 text-md font-bold text-black-700 ">Price</label>
-        <input type="text" id="price"
-               class=" border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5 "
-               placeholder="Price" name="price"
-               value="{{old('price')}}"
-               required>
-        @error('price')
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
-        </p>
-        @enderror
-    </div>
+                            <div>
+                                <label for="quantity"
+                                       class="block text-md font-medium mb-2 mt-3">Quantity :</label>
+                                <div class="relative">
+                                    <input type="text" id="quantity"
+                                           name="quantity"
+                                           class="py-3 px-2 pl-3 pr-16 block w-full border-gray-50 shadow-sm rounded-lg text-md focus:z-10 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-700 dark:placeholder-gray-400 mt-3"
+                                           placeholder="Quantity"
+                                           required
+                                           value="{{old('quantity')}}">
+                                </div>
+                            </div>
 
-    <div class="form-group">
-        <label for="status" class="block mb-2 text-md font-bold text-black-700 ">Status</label>
-        <select
-            class="form-control form-control border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5"
-            id="status" required name="status" value="{{old('status')}}">
-            <option value="En Stock">En Stock</option>
-            <option value="Epuise">Epuise</option>
-        </select>
-        @error('status')
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
-        </p>
-        @enderror
-    </div>
-    <div>
-        <label for="color" class="block mb-2 text-md font-bold text-black-700 ">Color</label>
-        <input type="text" id="color"
-               class=" border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5 "
-               placeholder="Color"
-               value="{{old('color')}}"
-               required
-               name="color">
-        @error('color')
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
-        </p>
-        @enderror
-    </div>
-    <div>
-        <label for="discount" class="block mb-2 text-md font-bold text-black-700 ">Discount</label>
-        <input type="text" id="discount"
-               class=" border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5 "
-               placeholder="discount"
-               value="{{old('discount')}}"
-               required
-               name="discount">
-        @error('discount')
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
-        </p>
-        @enderror
-    </div>
-
-    <label for="description" class="block mb-2 text-md font-bold text-black-700 ">Description</label>
-    <textarea id="textarea"
-              type="textarea"
-              class="border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5"
-              value="{{old('description')}}"
-              required
-              name="description">
-                    </textarea>
-    @error('status')
-    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
-    </p>
-    @enderror
-
-    <div class="flex justify-end">
-        <button
-            type="submit"
-            class=" mr-2 flex px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:ring focus-visible:ring-opacity-50"
-        >
-            Add Product
-        </button>
-        <button
-            type="button"
-            id="closeAddProductModal"
-            class="mr-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-opacity-50"
-        >
-            Cancel
-        </button>
-
-    </div>
-</form>
+                        </div>
 
 
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+
+                            <div class="form-group">
+                                <label for="matter"
+                                       class="block mb-2 text-md font-medium text-gray-900 mt-3">Matter :</label>
+                                <input type="text"
+                                       class=" form-control bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400 mt-3"
+                                       id="matter" placeholder="Product Matter" name="matter" required
+                                       value="{{old('matter')}}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="color"
+                                       class="block mb-2 text-md font-medium text-gray-900 mt-3">Color :</label>
+                                <input type="text"
+                                       class=" form-control pl-3 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400 mt-3"
+                                       id="color" name="color"
+                                       placeholder="Product Color"
+                                       required
+                                       value="{{old('color')}}">
+                            </div>
+
+                        </div>
+                        <div>
+                            <label for="discount"
+                                   class="block text-md font-medium mb-2 mt-3">Discount :</label>
+                            <div class="relative">
+                                <input type="text" id="discount"
+                                       name="discount"
+                                       class="py-3 px-2 pl-3 pr-16 block w-full border-gray-50 shadow-sm rounded-lg text-md focus:z-10 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-700 dark:placeholder-gray-400 mt-3"
+                                       placeholder="Is there any discount for this product ?"
+                                       required
+                                       value="{{old('discount')}}">
+                                <div class="absolute inset-y-0 right-0 flex items-center pointer-events-none z-20 pr-4">
+                                    <span class="text-gray-100">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status"
+                                   class="block mb-2 text-md font-medium text-gray-900 mt-3">Status :</label>
+                            <select
+                                class=" form-control bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400 mt-3"
+                                id="status" name="status">
+                                <option value="En Stock">En Stock</option>
+                                <option value="Epuise">Epuise</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+
+                            <div class="form-group">
+                                <label class="block mt-3 mb-2 text-md font-medium text-gray-900"
+                                       for="category_id">Category :</label>
+                                <select
+                                    class=" form-control mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400 "
+                                    id="category_id" name="category_id">
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="option" class="block mt-3 mb-2 text-md font-medium text-gray-900">Child
+                                    Category</label>
+                                <select
+                                    class=" form-control mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400 "
+                                    id="option" name="option" required>
+                                    <option selected disabled>Select Child Category</option>
+                                    @foreach($categories as $category)
+                                        @foreach($category->options as $option)
+                                            <option value="{{ $option->id }}">{{ $option->name }}</option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description"
+                                   class="block mb-2 text-md font-medium text-gray-900 mt-3">Description :</label>
+                            <textarea
+                                class=" form-control bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-500 dark:placeholder-gray-400 mt-3"
+                                id="description" name="description" placeholder="Add some description for this product!"
+                                value="{{old('description')}}"
+                                rows="2"></textarea>
+                        </div>
+                        <div class="flex ">
+                            <div>
+                                <label class="block mt-3 mb-2 text-md font-medium text-gray-900">Images</label>
+                                <input type="file" name="images[]" multiple accept="image/*" class="text-xs">
+                            </div>
+                        </div>
+
+                        <div class="mt-3 grid">
+                            <button type="submit"
+                                    class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all dark:focus:ring-offset-gray-800">
+                                Create Product
+                            </button>
+                        </div>
+                        @foreach($errors->all() as $error)
+                            <li class="mt-2 text-md text-red-600 dark:text-red-500">{{$error}}</li>
+                        @endforeach
+                    </form>
+                </div>
+
+                @endsection
+
+
+                <script>
+                    function deleteImage(id) {
+                        axios.delete('/products/images/' + id).then(function (response) {
+                            if (response.status == 200) {
+                                // The image has been deleted
+                                $(`[data-id='${id}']`).remove();
+                            }
+                        });
+                    }
+                </script>

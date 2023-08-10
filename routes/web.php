@@ -4,8 +4,6 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 
-//use App\Http\Controllers\ProductController;
-use App\Http\Livewire\ProductLivewire;
 
 // Categories Routes
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
@@ -16,30 +14,16 @@ Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->
 Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-//// Products Routes
 
-//
-//
-//Route::post('/products', [ProductLivewire::class, 'store'])->name('products.store');
-//Route::get('/products', ProductLivewire::class)->name('products.index');
-//Route::get('/products/create', [ProductLivewire::class, 'create'])->name('products.create');
-//Route::get('/products/{product}', [ProductLivewire::class, 'show'])->name('products.show');
-//Route::get('/products/{product}/edit', [ProductLivewire::class, 'edit'])->name('products.edit');
-
-
-//use App\Http\Controllers\ProductController;
-//use App\Http\Controllers\CategoryController;
-//
-//Route::redirect('/', '/products');
-//
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::get('/products/{id}/', [ProductController::class, 'show'])->name('products.show');
+Route::post('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-//
-//
-//Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-//
+
+
+Route::get('/app', function () {
+    return view('layouts.app');
+});

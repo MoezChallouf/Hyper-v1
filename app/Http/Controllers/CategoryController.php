@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\CategoryOption;
 use Illuminate\Http\Request;
+use PhpOption\Option;
 
 class CategoryController extends Controller
 {
@@ -22,7 +23,14 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('categories.create');
+
+        $categories = Category::all();
+
+        // Fetch all category options from the database
+//        $categoryOptions = Option::all();
+//
+//        return view('blade.create', compact('categories', 'categoryOption'));
+
     }
 
     public function store(Request $request)
