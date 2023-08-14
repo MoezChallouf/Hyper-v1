@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet"/>
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet"/>
 
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -293,34 +293,46 @@
         integrity="sha512-8Z5++K1rB3U+USaLKG6oO8uWWBhdYsM3hmdirnOEWp8h2B1aOikj5zBzlXs8QOrvY9OxEnD2QDkbSKKpfqcIWw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+{{--<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>--}}
+{{--<script>--}}
+{{--    const inputElement = document.querySelector('input[type="file"]');--}}
+{{--    const pond = FilePond.create(inputElement, {--}}
+{{--        name: 'image' // Make sure this matches the name attribute in your form--}}
+{{--    });--}}
+
+
+{{--    FilePond.setOptions({--}}
+{{--        server: {--}}
+{{--            process: '{{ route("store") }}', // Update to match your named route--}}
+{{--            revert: '{{ route("destroy") }}', // Update to match your named route--}}
+{{--            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}--}}
+{{--        }--}}
+{{--    });--}}
+{{--</script>--}}
+
+
 <script>
-    function addOption() {
-        var optionsDiv = document.getElementById('options');
-        var inputGroup = document.createElement('div');
-        inputGroup.classList.add('input-group', 'mb-3');
+    document.addEventListener("DOMContentLoaded", function () {
+        const addOptionButton = document.getElementById("addOption");
+        const optionFieldsContainer = document.getElementById("optionFields");
 
-        var input = document.createElement('input');
-        input.type = 'text';
-        input.name = 'options[]';
-        input.classList.add('form-control');
-        input.required = true;
+        addOptionButton.addEventListener("click", function () {
+            const optionInput = document.createElement("div");
+            optionInput.className = "flex items-center space-x-2 option-field";
+            optionInput.innerHTML = `
+                    <input type="text" name="options[]" class="flex-1 mt-1 p-2 border rounded-lg" placeholder="Child Category  ${optionFieldsContainer.children.length + 2}">
+                    <button type="button" class="px-4 py-2 text-red-500 font-semibold border rounded-lg hover:bg-red-100 focus:outline-none focus:shadow-outline-red active:bg-red-200 transition duration-300 remove-option">X</button>
+                `;
 
-        var appendDiv = document.createElement('div');
-        appendDiv.classList.add('input-group-append');
+            optionFieldsContainer.appendChild(optionInput);
 
-        var removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.classList.add('btn', 'btn-outline-danger');
-        removeButton.textContent = 'Remove';
-        removeButton.onclick = function () {
-            optionsDiv.removeChild(inputGroup);
-        };
-
-        appendDiv.appendChild(removeButton);
-        inputGroup.appendChild(input);
-        inputGroup.appendChild(appendDiv);
-        optionsDiv.appendChild(inputGroup);
-    }
+            // Attach event listener to the newly added close button
+            const removeOptionButton = optionInput.querySelector(".remove-option");
+            removeOptionButton.addEventListener("click", function () {
+                optionInput.remove();
+            });
+        });
+    });
 </script>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -331,15 +343,53 @@
 <script>
     $(document).ready(function () {
 
-        var table = $('#example').DataTable({
+        var table = $('.category').DataTable({
+            pageLength: 5,
             responsive: true
         })
             .columns.adjust()
             .responsive.recalc();
     });
 </script>
-<script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('.myDataTable').DataTable({
+            pageLength: 5,
+            responsive: true,
+            deferLoading: 0,
+            processing: true,
+            language: {
+                'loadingRecords': '&nbsp;',
+                'processing': 'Loading...'
+            },
+            columnDefs: [
+                {
+                    targets: 8,
+                    render: function (data) {
+                        var words = data.split(' ').slice(0, 4).join(' ');
+                        return words + ' ...';
+                    }
+                }
+                // Add more columnDefs if needed for other columns
+            ],
+            initComplete: function () {
+                // Hide the loading indicator once DataTable is initialized
+                $('#loading').hide();
+            }
+        });
 
+        // Show the loading indicator while DataTable is being initialized
+        $('#loading').show();
+    });
+</script>
+<script>
+    function openDeleteModal() {
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+</script>
 </body>
 </html>

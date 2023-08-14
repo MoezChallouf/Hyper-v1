@@ -10,7 +10,7 @@
             <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
                 Products
             </h1>
-            <button class="justify-end" id="openAddProductModal">
+            <button class="justify-end">
                 <a href="{{route('products.create')}}"
                    class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Add Product</a>
@@ -18,11 +18,18 @@
 
         </div>
 
+        <div id="loading" style="display: none;">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
 
-        <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+        </div>
 
 
-            <table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+        <div class="mydataTable p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+
+
+            <table class="myDataTable stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                 <tr>
                     <th data-priority="1" class="text-center">ID</th>
@@ -61,9 +68,7 @@
                         <td class="text-center">{{ $product->color}}</td>
                         <td class="text-center">{{ $product->discount}} %</td>
                         <td class="text-center"> {{ $product->description}}</td>
-                        <td class="text-left">
-                            {{ $product->category->name }}
-                        </td>
+                        <td class="text-left">{{ $product->category->name }}</td>
 
                         <!-- ... other HTML code for displaying product data ... -->
                         <td class="text-center">
@@ -129,34 +134,7 @@
             </h1>
         @endif
     </div>
-
-    {{--    </body>--}}
-    <script>
-        // Get the modal element
-        const addProductModal = document.getElementById('addProductModal');
-        // Get the button that opens the modal
-        const openAddProductModal = document.getElementById('openAddProductModal');
-        // Get the button that closes the modal
-        const closeAddProductModal = document.getElementById('closeAddProductModal');
-
-        // Function to open the modal
-        function openModal() {
-            addProductModal.classList.remove('hidden');
-            document.body.classList.add('modal-open');
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            addProductModal.classList.add('hidden');
-            document.body.classList.remove('modal-open');
-        }
-
-        // Event listener to open the modal when the "Add Product" button is clicked
-        openAddProductModal.addEventListener('click', openModal);
-
-        // Event listener to close the modal when the "Cancel" button is clicked
-        closeAddProductModal.addEventListener('click', closeModal);
-
-    </script>
+    </body>
 
 @endsection
+

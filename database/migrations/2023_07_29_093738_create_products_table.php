@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('price');
+            $table->unsignedInteger('price');
             $table->unsignedInteger('quantity');
             $table->enum('status', ['En Stock', 'Epuise'])->default('En Stock');
             $table->string('matter');
@@ -24,7 +24,6 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('discount');
             $table->foreignId('category_id');
             $table->text('description')->nullable();
-            $table->json('images')->nullable();
             $table->timestamps();
         });
 

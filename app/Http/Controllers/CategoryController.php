@@ -29,7 +29,7 @@ class CategoryController extends Controller
         // Fetch all category options from the database
 //        $categoryOptions = Option::all();
 //
-//        return view('blade.create', compact('categories', 'categoryOption'));
+        return view('categories.create', compact('categories',));
 
     }
 
@@ -68,19 +68,42 @@ class CategoryController extends Controller
     {
         return view('categories.edit', compact('category'));
     }
-
+    
     public function update(Request $request, Category $category)
     {
-        $data = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'option' => 'required|string|max:255',
-            // Add any other validation rules for the columns if needed
+            'options.*' => 'nullable|string|max:255',
         ]);
 
-        $category->update($data);
+        // Update the category's name
+        $category->update([
+            'name' => $request->input('name'),
+        ]);
+
+        $options = $request->input('options');
+
+        if ($options) {
+            foreach ($options as $index => $option) {
+                if ($index < count($category->options)) {
+                    // Update existing options
+                    $categoryOption = $category->options[$index];
+                    $categoryOption->update([
+                        'name' => $option,
+                    ]);
+                } else {
+                    // Create new options
+                    CategoryOption::create([
+                        'name' => $option,
+                        'category_id' => $category->id,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
+
 
     public function destroy(Category $category)
     {

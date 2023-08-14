@@ -27,7 +27,7 @@
                                 <div class="relative">
                                     <input type="text" id="price"
                                            name="price"
-                                           class="py-3 px-4 pl-9 pr-16 block w-full border-gray-50 shadow-sm rounded-lg text-md focus:z-10 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-700 dark:placeholder-gray-400 mt-3"
+                                           class="py-3 px-4 pr-16 block w-full border-gray-50 shadow-sm rounded-lg text-md focus:z-10 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-700 dark:placeholder-gray-400 mt-3"
                                            placeholder="0.00"
                                            required
                                            value="{{old('price')}}">
@@ -144,7 +144,8 @@
                         <div class="flex ">
                             <div>
                                 <label class="block mt-3 mb-2 text-md font-medium text-gray-900">Images</label>
-                                <input type="file" name="images[]" multiple accept="image/*" class="text-xs">
+                                <input type="file" name="images[]" multiple accept="image/*"
+                                       class="text-md border border-gray-200 rounded-lg p-10">
                             </div>
                         </div>
 
@@ -162,14 +163,41 @@
 
                 @endsection
 
-
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
-                    function deleteImage(id) {
-                        axios.delete('/products/images/' + id).then(function (response) {
-                            if (response.status == 200) {
-                                // The image has been deleted
-                                $(`[data-id='${id}']`).remove();
+                    // functionality of displaying only the child categories that are associated with the selected parent category when a user chooses a category
+
+                    $(function () {
+                        $("input[type='submit']").click(function () {
+                            debugger
+                            var $fileUpload = $("input[type='file']");
+                            if (parseInt($fileUpload.get(0).files.length) > 2) {
+                                alert("You can only upload a maximum of 2 files");
                             }
                         });
-                    }
+                    });
+
+                    $(document).ready(function () {
+                        // When the parent category dropdown value changes
+                        $('#category_id').change(function () {
+                            var selectedCategoryId = $(this).val();
+
+                            // Clear previous child category options
+                            $('#option').empty();
+
+                            // Add a default disabled option
+                            $('#option').append('<option selected disabled>Select Child Category</option>');
+
+                            // Loop through categories to find the selected parent's child categories
+                            @foreach($categories as $category)
+                                @if($category->parent_id == old('category_id'))
+                                @foreach($category->options as $option)
+                            if ({{ $category->id }} == selectedCategoryId) {
+                                $('#option').append('<option value="{{ $option->id }}">{{ $option->name }}</option>');
+                            }
+                            @endforeach
+                            @endif
+                            @endforeach
+                        });
+                    });
                 </script>

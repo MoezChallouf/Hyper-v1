@@ -1,108 +1,44 @@
-{{--@extends('layouts.dashboard')--}}
-{{--@section('title', 'Categories Management')--}}
-{{--@section('content')--}}
-{{--    <div class="container">--}}
-{{--        <h1 class="text-left">Create Category</h1>--}}
-{{--        <form method="POST" action="{{ route('categories.store') }}">--}}
-{{--            @csrf--}}
-{{--            <div class="form-group">--}}
-{{--                <label for="name">Category Name</label>--}}
-{{--                <input type="text" name="name" class="form-control" required>--}}
-{{--            </div>--}}
-{{--            <div class="form-group" id="options">--}}
-{{--                <label for="option">Options</label>--}}
-{{--                <div class="input-group mb-3">--}}
-{{--                    <input type="text" name="options[]" class="form-control" required>--}}
-{{--                    <div class="input-group-append">--}}
-{{--                        <button class="btn btn-outline-secondary" type="button" onclick="addOption()">Add Option--}}
-{{--                        </button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <button type="submit" class="btn btn-primary">Create Category</button>--}}
-{{--        </form>--}}
-{{--    </div>--}}
-{{--@endsection--}}
+@extends('layouts.dashboard')
+@section('title', 'Categories Management')
+@section('content')
 
-    <!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+    <div class="flex justify-center items-center mt-16 h-auto">
+        <div class="w-full max-w-md p-6 bg-white  border border-gray-500 rounded ">
+            <h1 class="flex text-center justify-center text-gray-500 font-semibold mb-5 text-xl ">Create New
+                Category</h1>
+            <form method="POST" action="{{ route('categories.store') }}" class="space-y-4">
+                @csrf
 
-
-</head>
-<body>
-
-<form method="POST" action="{{ route('categories.store') }}">
-    @csrf
-    <div>
-        <label for="name" class="block mb-2 text-md font-bold text-black-700 ">Parent Category</label>
-        <input type="text" id="name" name="name"
-               class=" border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5 "
-               placeholder="Category Name"
-               value="{{old('name')}}"
-               required>
-        @error('name')
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{$message}}</span>
-        </p>
-        @enderror
-    </div>
-
-
-    <div class="form-group" x-data="{ options: [] }">
-        <label for="option" class="block mb-2 text-md font-bold text-black-700">Child Category</label>
-        <div x-show="options.length > 0">
-            <template x-for="(option, index) in options" :key="index">
-                <div class="input-group mb-3">
-                    <input
-                        type="text"
-                        x-model="option"
-                        :name="'options[' + index + ']'"
-                        class="option-input border border-black-500 text-black-900 mb-3 placeholder-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-black-500 block w-full p-2.5"
-                        required
-                        placeholder="Category Options"
-                    >
+                <div>
+                    <label for="name" class="block font-semibold text-gray-700">Category Name</label>
+                    <input type="text" name="name" class="w-full mt-1 p-2 border rounded-lg"
+                           placeholder="Parent Category"
+                           required>
                 </div>
-            </template>
-        </div>
-        <div class="input-group-append">
-            <button
-                class="border-2 font-semibold text-gray-500 border-indigo-500 btn flex hover:bg-indigo-500 hover:text-white px-2 rounded"
-                type="button"
-                @click="options.push('')"
-            >
-                Add Option
-            </button>
+
+                <div class="space-y-2">
+                    <label for="options" class="block font-semibold text-gray-700">Child Category Name</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" name="options[]" class="flex-1 mt-1 p-2 border rounded-lg"
+                               placeholder="Child Category 1">
+                    </div>
+                    <div id="optionFields"></div>
+                </div>
+                <button type="button" id="addOption"
+                        class="px-4 py-2 text-blue-500 font-semibold border rounded-lg hover:bg-blue-100 focus:outline-none focus:shadow-outline-blue active:bg-blue-200 transition duration-300">
+                    Add Option
+                </button>
+                <button type="submit"
+                        class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-300">
+                    Create Category
+                </button>
+            </form>
         </div>
     </div>
-    <div class="flex justify-end mt-4">
-        <button
-            type="button"
-            id="closeAddProductModal"
-            class="mr-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-opacity-50"
-        >
-            Cancel
-        </button>
-        <button
-            type="submit"
-            class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:ring focus-visible:ring-opacity-50"
-        >
-            Add Category
-        </button>
-    </div>
 
-
-</form>
-@section('scripts')
-    <script>
-        $('#name').val();
-    </script>
 @endsection
-</body>
 
-</html>
+
+
+
 
