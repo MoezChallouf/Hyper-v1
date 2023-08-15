@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('discount');
             $table->foreignId('category_id');
             $table->text('description')->nullable();
+            $table->foreignId('partner_id')->nullable();
             $table->timestamps();
         });
 

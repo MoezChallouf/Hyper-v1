@@ -30,4 +30,9 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
 }
